@@ -1,0 +1,99 @@
+---
+title: "AA_Rapport mensuel pour analyse Indice des Prix à la Consommation(IPC)"
+author: "Direction Régionale de Tanger-Tétouan-Al Hoceima"
+format: 
+  html:
+    self-contained: true
+    toc: true
+    toc-depth: 2
+    toc-location: left
+    toc-title: Sommaire
+    grid :
+      sidebar-width: 250px
+      body-width: 1000px
+      margin-width: 50px
+      gutter-width: 1.5rem
+    css: style_html.css  
+params: 
+    p_ville: "" 
+    p_periode: ""
+           
+editor: visual
+---
+
+```{r}
+#| label: initialisation
+#| echo: false 
+#| warning: false 
+#| message: false 
+ 
+# Packages 
+library(dplyr)
+library(lubridate)
+library(kableExtra) 
+library(ggplot2) 
+library(tidyr)
+library(glue)
+library(stringr)
+
+# option 
+# pour empêcher quarto d'appliquer automatiquement son propre style, alignement, pagination, etc.)
+options(knitr.table.html.attr = "quarto-disable-processing=true") 
+```
+
+```{r}
+#| label: parametres
+#| echo: false
+#| warning: false 
+#| message: false 
+# Recuperation des parametres
+code_ville <- str_pad(params$p_ville, width = 2, pad = "0")
+periode_analyse <- params$p_periode 
+```
+
+```{r}
+#| label: preparation_donnees
+#| echo: false 
+#| warning: false 
+#| message: false 
+
+# sous-prog_traitement_donnees
+source(file="Function_round_half.R")
+source(file="AA_Preparation_donnees_analyse.R")
+```
+
+```{r}
+#| label: titre
+#| echo: false 
+#| warning: false 
+#| message: false
+ 
+if (code_ville != "99") {
+      titre <- glue("Ville de {l_ville} en {l_mois}  {substr(periode_analyse,1,4)} ")
+} else {
+     titre <- glue("{l_ville} en {l_mois}  {substr(periode_analyse,1,4)} ")
+}
+```
+
+# [`r titre`]{style="color:red;"}
+
+# Ensemble
+
+# Secteur alimentaire
+
+# Evolution dans le temps de l'IPC
+
+## Evolution annuelle
+
+## Evolution mensuelle
+
+# Tableau de synthèse
+
+<!-- # TEST -->
+
+```{r}
+#| label: test
+print(code_ville)
+print(periode_analyse)
+print(l_mois)
+```

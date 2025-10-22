@@ -1,0 +1,49 @@
+---
+title: "Etude départementale"
+format:
+  html:
+    self-contained: true
+editor: visual
+---
+
+## Collecte des données
+
+```{r}
+#| label: connexion
+#| warning: false
+library(glue)
+library(dplyr)
+
+donnee <- readRDS("../data_entree/data_population.rds")
+ldc <- readRDS("../data_entree/ldc.rds")
+
+req <- donnee %>%  
+  filter(substr(dc,1,2) == "13") %>% 
+  arrange(desc(poptot_anrp21)) %>% 
+  head(10)  %>%   
+  left_join(ldc, by = "dc") %>% 
+  select (dc,ldc,poptot_anrp21) %>% 
+  arrange(desc(poptot_anrp21)) 
+
+```
+
+## Affichage du résultat
+
+```{r}
+#| label: affichage
+#| warning: false
+library(kableExtra)
+
+titre <- glue("<span style='font-size:20px'>Les 10 communes les plus peuplées du département 13</span>")
+
+knitr::kable(req,
+             col.names = c("Code commune", "Nom de la commune",
+                        "Population en 2021"),
+             caption = titre ) %>% 
+      kable_styling(bootstrap_options = "striped",
+                full_width = FALSE,
+                position = "left",
+                font_size = 14) %>% 
+       column_spec(1, width = "2.5cm") 
+
+```
